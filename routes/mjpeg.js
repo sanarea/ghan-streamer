@@ -21,7 +21,7 @@ router.use('/', (req, res, next) => {
   res.set('Expires', '-1')
   res.set('Pragma', 'no-cache')
   
-  mjpeg.pipe(req, res);
+  mjpeg.pipe(req, res); 
   
 })
 
