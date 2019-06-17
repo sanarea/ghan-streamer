@@ -32,7 +32,7 @@ var params = [
     // '-profile:v', ' main',
     '-g', '25', //
     '-r', '25', //
-    '-tune','zerolatency',
+    //'-tune','zerolatency', // not support pi
     '-b:v', '500k',
     '-threads', 2,
     '-q:v', '9', //품질... 1..2
