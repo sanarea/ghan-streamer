@@ -24,7 +24,7 @@ var params1 = [
 ];
 var params = [
     // '-framerate', '25', // 없으면 자동으로 설정됨...
-    // '-video_size', '1280x720', // 이미지 품질
+    '-video_size', process.env.VIDEO_SIZE, // 이미지 품질
     // '-c', 'copy',
     // '-format',
     '-f', process.env.INPUT_DRIVER,
@@ -69,9 +69,7 @@ class mjpeg {
             console.log('error', `${data}`);
         });
 
-        ffmpeg.on('exit', (code, signal) => {
-            console.log('exit', code, signal);
-        });
+      
         return ffmpeg;
     }
     async pipe(req, res) {
@@ -101,6 +99,10 @@ class mjpeg {
             //     end: true
             // })
 
+        });
+        ffmpeg.on('exit', (code, signal) => {
+            console.log('exit', code, signal);
+            ffmpeg.res.end();
         });
         req.ffmpeg = ffmpeg;
         req.connection.on('close', function () {
