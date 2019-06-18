@@ -1,5 +1,5 @@
 const spawn = require('child_process').spawn;
-let param = require('.env/ffmpeg');
+let param = require('./env/ffmpeg');
 const {
     Writable
 } = require('stream');
