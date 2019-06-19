@@ -5,11 +5,11 @@ const {
 } = require('stream');
 
 class mjpeg {
-    constructor(){
+    constructor() {
     }
     async ffmpeg() {
 
-        
+
         var ffmpeg = require('child_process').spawn("ffmpeg", param);
         let cnt = 0;
         ffmpeg.on('error', (error) => {
@@ -20,7 +20,7 @@ class mjpeg {
             console.log('error', `${data}`);
         });
 
-      
+
         return ffmpeg;
     }
     async pipe(req, res) {
@@ -53,7 +53,10 @@ class mjpeg {
         });
         ffmpeg.on('exit', (code, signal) => {
             console.log('exit', code, signal);
-            ffmpeg.res.end();
+            if(ffmpeg.res){ 
+                ffmpeg.res.end();
+            } 
+
         });
         req.ffmpeg = ffmpeg;
         req.connection.on('close', function () {
