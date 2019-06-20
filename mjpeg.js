@@ -5,8 +5,7 @@ const {
 } = require('stream');
 
 class mjpeg {
-    constructor() {
-    }
+    constructor() {}
     async ffmpeg() {
 
 
@@ -41,11 +40,15 @@ class mjpeg {
         let cnt = 0;
         ffmpeg.stdout.on('data', (data) => {
 
-            if (cnt++ % 100 == 0) {
+            if (cnt++ % 500 == 0) {
                 console.log(`data:${data.length} ${cnt}`);
             }
             // console.log(res);
-            res.write(data);
+            try {
+                res.write(data);
+            } catch (error) {
+
+            }
             // writable.write(data, {
             //     end: true
             // })
@@ -53,9 +56,13 @@ class mjpeg {
         });
         ffmpeg.on('exit', (code, signal) => {
             console.log('exit', code, signal);
-            if(ffmpeg.res){ 
-                ffmpeg.res.end();
-            } 
+            try {
+                if (ffmpeg.res) {
+                    ffmpeg.res.end();
+                }
+            } catch (error) {
+                console.log(error);
+            }
 
         });
         req.ffmpeg = ffmpeg;
