@@ -34,11 +34,9 @@ class FFPipe extends EventEmitter {
             }
 
             for (let i = 0; i < keys.length; i++) {
-                if(this.store[keys[i]].writable) 
+                if (this.store[keys[i]].writable)
                     this.store[keys[i]].write(data);
-                else{
-                    console.log("res not avaialbe");
-                }
+
             }
 
         });
