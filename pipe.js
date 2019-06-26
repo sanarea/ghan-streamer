@@ -4,38 +4,25 @@ const {
     Writable
 } = require('stream');
 
-class mjpeg {
+class pipe {
     constructor() {}
-    async ffmpeg() {
-
-
+    ffmpeg() {
         var ffmpeg = require('child_process').spawn("ffmpeg", param);
         let cnt = 0;
         ffmpeg.on('error', (error) => {
             console.log(error);
         });
         ffmpeg.stderr.on('data', (data) => {
-
             console.log('error', `${data}`);
         });
-
-
         return ffmpeg;
     }
     async pipe(req, res) {
-        const writable = new Writable({
-            write(chunk, encoding, callback) {
-                res.write(chunk);
-                // res.write(`Content-Type: image/jpeg\r\nContent-Length: ${chunk.length}\r\n\r\n`);
-                // res.write(chunk);
-                // res.write('\r\n--ffmpeg_streamer\r\n');
-                // callback();
-            }
-        })
+
         res.set('Content-Type', 'multipart/x-mixed-replace;boundary=ffmpeg');
         // res.write('--ffmpeg_streamer\r\n');
         // console.log("Xxx");
-        let ffmpeg = await this.ffmpeg();
+        let ffmpeg = this.ffmpeg();
         res.ffmpeg = ffmpeg;
         let cnt = 0;
         ffmpeg.stdout.on('data', (data) => {
@@ -71,10 +58,7 @@ class mjpeg {
             req.ffmpeg.kill();
             console.log('user cancelled');
         });
-        req.on("end", (data) => {
-            console.log("req end");
-        });
-        res.on("end", (data) => {
+        res.on("end", () => {
             console.log("end...");
             res.ffmpeg.kill();
         });
@@ -82,4 +66,4 @@ class mjpeg {
     }
 }
 
-module.exports = new mjpeg();
+module.exports = new pipe();
