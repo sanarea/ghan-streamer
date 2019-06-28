@@ -23,7 +23,7 @@ class FFPipe extends EventEmitter {
         });
         let cnt = 0;
         this.ffmpeg.stdout.on('data', (data) => {
-            if (cnt++ % 500 == 0) {
+            if (cnt++ % 100 == 0) {
                 let keys = Object.keys(this.store);
                 console.log(`still : client: ${keys.length} ,${data.length} ${cnt}`);
 
