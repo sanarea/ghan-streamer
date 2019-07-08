@@ -3,5 +3,5 @@ let v4l2 = new V4L2();
 
 
 (async () => {
-    await v4l2.test();
+    await v4l2.start();
 })();
