@@ -2,7 +2,7 @@
 var params = [
     '-framerate', 25, // 없으면 자동으로 설정됨...
     '-video_size', "1280x720", // 이미지 품질
-//    '-c:v', 'h264_omx',
+    '-c', 'copy',
     '-input_format','mjpeg',
     '-f', 'v4l2',
     '-i', '/dev/video0',

@@ -47,7 +47,7 @@ class V4l2 extends EventEmitter {
             // console.error(error);
         });
         this.pipe.stderr.on('data', (data) => {
-            // console.error('data', `${data}`);
+            console.error('data', `${data}`);
         });
         this.pipe.on('exit', (code, signal) => {
             console.log('pipe exit', code, signal);

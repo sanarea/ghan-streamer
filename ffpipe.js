@@ -11,10 +11,10 @@ class FFPipe extends EventEmitter {
     async start() {
         this.ffmpeg = spawn("ffmpeg", param);
         this.ffmpeg.on('error', (error) => {
-            // console.error(error);
+            console.error(error);
         });
         this.ffmpeg.stderr.on('data', (data) => {
-            // console.error('data', `${data}`);
+            console.error('stderr data', `${data}`);
         });
         this.ffmpeg.on('exit', (code, signal) => {
             console.log('ffmpeg exit', code, signal);
@@ -23,6 +23,7 @@ class FFPipe extends EventEmitter {
         });
         let cnt = 0;
         this.ffmpeg.stdout.on('data', (data) => {
+            
             if (cnt++ % 100 == 0) {
                 let keys = Object.keys(this.store);
                 console.log(`still : client: ${keys.length} ,${data.length} ${cnt}`);
