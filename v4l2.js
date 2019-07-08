@@ -15,8 +15,8 @@ const EventEmitter = require('events');
 const DEF_PARAM = [
     '-d', '/dev/video0',
     '--stream-mmap',
-    '-p' , '15',
-    '--stream-to' , '-'
+    '-p', '15',
+    '--stream-to', '-'
 ];
 let v_param = params ? params : DEF_PARAM;
 const V4L2 = 'v4l2-ctl';
@@ -59,7 +59,9 @@ class V4l2 extends EventEmitter {
             if (cnt++ % 100 == 0) {
                 console.log(`still : client: ${data.length} ${cnt}`);
             }
-            fs.writeFile(`tmp/${(cnt+'').padStart(5)}.jpg`);
+            fs.writeFile(`tmp/${(cnt+'').padStart(5)}.jpg`, data, (er) => {
+                if (er) console.log(er);
+            });
         });
     }
 
