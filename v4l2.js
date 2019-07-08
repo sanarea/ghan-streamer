@@ -57,7 +57,7 @@ class V4l2 extends EventEmitter {
         let cnt = 0;
         this.pipe.stdout.on('data', (data) => {
             if (cnt++ % 100 == 0) {
-                console.log(`still : client: ${keys.length} ,${data.length} ${cnt}`);
+                console.log(`still : client: ${data.length} ${cnt}`);
             }
             fs.writeFile(`tmp/${(cnt+'').padStart(5)}.jpg`);
         });
