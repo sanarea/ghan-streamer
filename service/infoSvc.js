@@ -4,7 +4,7 @@
 class InfoSvc {
 
     deviceList() {
-
+        
     }
     deviceInfo(id) {
 
