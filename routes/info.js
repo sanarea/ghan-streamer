@@ -5,12 +5,8 @@ router.use('/', (req, res) => {
   res.app.pipe.push(res);
 
 });
-/**
- * /streamer/0 
- */
-router.use('/:deviceId', (req, res) => {
+router.use('/', (req, res) => {
   res.app.pipe.push(res);
 
 });
-
 module.exports = router;

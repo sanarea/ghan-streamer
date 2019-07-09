@@ -1,4 +1,5 @@
 var params = [
+    '-video_size', "1280x720", 
     '-r', 15,
     '-f', 'v4l2',
     '-input_format', 'mjpeg',
