@@ -1,5 +1,5 @@
 const spawn = require('child_process').spawn;
-let {param_input,param_output} = require('../env/ffmpeg');
+let { param_input, param_output } = require('../env/ffmpeg');
 var uuid = require('node-uuid');
 const EventEmitter = require('events');
 
@@ -9,17 +9,17 @@ class FFPipe extends EventEmitter {
         this.store = [];
         this.ffmpeg = {};
     }
-    async start(id=0) {
-        
+    async start(id = 0) {
+
         let deviceParams = ["-i", id + ''];
         let n_param = param_input.concat(deviceParams).concat(param_output);
         // let n_param = deviceParams.concat(param);
         console.log(n_param);
-        
+
         this.ffmpeg[id] = spawn("ffmpeg", n_param);
         this.ffmpeg[id].on('error', (error) => {
             console.error(error);
-        }); 
+        });
         this.ffmpeg[id].stderr.on('data', (data) => {
             console.error('stderr data', `${data}`);
         });
@@ -27,15 +27,15 @@ class FFPipe extends EventEmitter {
             console.log('ffmpeg exit', code, signal);
             this.emit('exit', code, signal);
             delete this.ffmpeg[id];
-            
+
         });
         let cnt = 0;
+
         this.ffmpeg[id].stdout.on('data', (data) => {
-            
+
             if (cnt++ % 500 == 0) {
                 let keys = Object.keys(this.store);
                 console.log(`still : client: ${keys.length} ,${data.length} ${cnt}`);
-
             }
             let keys = Object.keys(this.store);
             if (!keys || keys.length < 1) {
@@ -43,9 +43,11 @@ class FFPipe extends EventEmitter {
             }
 
             for (let i = 0; i < keys.length; i++) {
-                if(this.store[keys[i]].deviceId === id)
+                if (this.store[keys[i]].deviceId === id) {
                     this.writeData(this.store[keys[i]], data);
+                }
             }
+
 
         });
     }
@@ -55,7 +57,7 @@ class FFPipe extends EventEmitter {
 
     }
 
-    push(res,deviceId) {
+    push(res, deviceId) {
         res.uuid = uuid.v1();
 
         res.set('Connection', 'close');
@@ -75,7 +77,17 @@ class FFPipe extends EventEmitter {
 
     }
     remove(res) {
+        let id = res.deviceId;
         delete this.store[res.uuid];
+        let keys = Object.keys(this.store);
+        for (let i = 0; i < keys.length; i++) {
+            let r = this.store[keys];
+            if (r.deviceId == id)
+                return;
+        }
+        let ff = this.ffmpeg[id];
+        ff.kill();
+
     }
 
 
