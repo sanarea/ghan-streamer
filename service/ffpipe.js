@@ -17,8 +17,7 @@ class FFPipe extends EventEmitter {
         for(let i=0;i<keys.length ;i++){
             let res = this.store[keys[i]];
             console.log(res.deviceId , deviceId);
-            if (res.deviceId) {
-                
+            if (res.deviceId==deviceId) {
                 res.end();
             }
         }
