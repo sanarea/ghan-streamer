@@ -8,7 +8,7 @@ const {
 let {
     params,
     setput
-} = require('./env/v4l2');
+} = require('../env/v4l2');
 var fs = require('fs');
 var uuid = require('node-uuid');
 const EventEmitter = require('events');

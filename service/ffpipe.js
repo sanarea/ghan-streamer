@@ -9,23 +9,44 @@ class FFPipe extends EventEmitter {
         this.store = [];
         this.ffmpeg = {};
     }
+    /**
+     * ffmpeg 에 연결된 connection 을 종료 시킨다.
+     */
+    async disconnect(deviceId) {
+        let keys = Object.keys(this.store);
+        for(let i=0;i<keys.length ;i++){
+            let res = this.store[keys[i]];
+            console.log(res.deviceId , deviceId);
+            if (res.deviceId) {
+                
+                res.end();
+            }
+        }
+        
+    } 
     async start(id = 0) {
 
         let deviceParams = ["-i", id + ''];
         let n_param = param_input.concat(deviceParams).concat(param_output);
         // let n_param = deviceParams.concat(param);
-        console.log(n_param);
+        console.log(n_param.join(' '));
 
         this.ffmpeg[id] = spawn("ffmpeg", n_param);
+        
         this.ffmpeg[id].on('error', (error) => {
-            console.error(error);
+            // console.error(error);
         });
+        
         this.ffmpeg[id].stderr.on('data', (data) => {
             console.error('stderr data', `${data}`);
         });
+        /**
+         * exit
+         */
         this.ffmpeg[id].on('exit', (code, signal) => {
             console.log('ffmpeg exit', code, signal);
             this.emit('exit', code, signal);
+            this.disconnect(id);
             delete this.ffmpeg[id];
 
         });
@@ -86,7 +107,8 @@ class FFPipe extends EventEmitter {
                 return;
         }
         let ff = this.ffmpeg[id];
-        ff.kill();
+        if(ff)
+            ff.kill();
 
     }
 
