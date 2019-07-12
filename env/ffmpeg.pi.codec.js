@@ -1,7 +1,4 @@
-var params = [
-    
-   
-];
+
 let param_input = [
     '-video_size', "1280x720",
     '-r', 15,
@@ -12,8 +9,8 @@ let param_input = [
 ];
 let param_output = [
     '-c:v', 'copy', // 순서가 중요하다...
-    "-f",
-    "mpjpeg",
+    "-b:v" , '20k',
+    "-f",   "mpjpeg",
     "pipe:1"
 ];
 module.exports = {
