@@ -33,11 +33,11 @@ class FFPipe extends EventEmitter {
         this.ffmpeg[id] = spawn("ffmpeg", n_param);
         
         this.ffmpeg[id].on('error', (error) => {
-            // console.error(error);
+            console.error(`${id} ERROR : ${error} `);
         });
         
         this.ffmpeg[id].stderr.on('data', (data) => {
-            console.error('stderr data', `${data}`);
+            console.error(`${id} stderr :${data}`);
         });
         /**
          * exit
@@ -102,7 +102,7 @@ class FFPipe extends EventEmitter {
         let keys = Object.keys(this.store);
         for (let i = 0; i < keys.length; i++) {
             let r = this.store[keys];
-            if (r.deviceId == id)
+            if (r&& r.deviceId == id)
                 return;
         }
         let ff = this.ffmpeg[id];
